@@ -1,0 +1,61 @@
+// ******* Menu link ******** //
+    var homeSectionId = $('#sp-page-builder > .page-content > section:first-child').attr('id');   // home section id
+
+    //if (homeSectionId) { var homeSectionId = homeSectionId } else { var homeSectionId = onePageUrl }
+
+    $('.sp-megamenu-wrapper ul, .nav.menu').find('li:not(".no-scroll")').each(function(i, el) {
+        var $that    = $(this),
+            $anchor  = $that.children('a'),
+            url      = $anchor.attr('href'),
+            splitUrl = url.split('#');
+
+        if ($that.hasClass('home')) {
+            if (homeSectionId) { 
+                $anchor.attr('href',onePageUrl+'#'+homeSectionId);
+            }else{
+                $anchor.attr('href',onePageUrl);
+            }
+        }else{
+            if (typeof splitUrl !== undefined){
+                $anchor.attr('href',onePageUrl+'#'+splitUrl[1]);
+            };
+        }
+    });
+
+	// smooth anchor scrolling
+  jQuery('a[href*="#"]').on('click', function (e) {
+        e.preventDefault();
+        if(this.hash !== '') {
+            if(this.hash !== '' && this.href.replace(this.hash, '') == window.location.href.replace(window.location.hash, '')) {
+                var target = jQuery(this.hash);
+                if(target.length && this.hash !== '#') {
+                    jQuery('html, body').stop().animate({
+                        'scrollTop': target.offset().top
+                    }, 1000, 'swing', function () {
+                        if(this.hash !== '#') {
+                            window.location.hash = target.selector;
+                        }
+                    });
+} else {
+                    if(this.hash !== '#') {
+                        window.location = jQuery(this).attr('href');
+                    }
+                }
+            } else {
+                if(this.hash !== '#') {
+                    window.location = jQuery(this).attr('href');
+                }
+            }
+        }
+    });
+
+	
+    //one page nav with smoth scroll and active nav
+    $('.sp-megamenu-parent, .nav.menu').onePageNav({
+        currentClass: 'active',
+        changeHash: false,
+        scrollSpeed: 900,
+        scrollOffset: 30,
+        scrollThreshold: 0.5,
+        filter: ':not(.no-scroll)'
+    });
